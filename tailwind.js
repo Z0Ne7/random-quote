@@ -5,6 +5,15 @@ module.exports = {
   presets: [],
   darkMode: false, // or 'media' or 'class'
   theme: {
+    extend: {
+      spacing: {
+        0.75: '0.1875rem',
+        128: '32rem',
+      },
+      outline: {
+        button: 'none',
+      },
+    },
     screens: {
       sm: '640px',
       md: '768px',
