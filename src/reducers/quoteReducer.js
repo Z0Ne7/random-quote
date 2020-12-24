@@ -14,8 +14,7 @@ const quoteReducer = (state = initialState, action) => {
       fetch(API_URL)
         .then((response) => response.json())
         .then((data) => {
-          state.quotesData = data.quotes;
-          console.log(state.quotesData);
+          state.quotesData = data;
         });
       return state;
     default:

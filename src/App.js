@@ -2,7 +2,6 @@ import React, { useEffect, useState } from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faQuoteLeft } from '@fortawesome/free-solid-svg-icons';
 import { faTwitter, faTumblr } from '@fortawesome/free-brands-svg-icons';
-import { API_URL } from './constants/serviceTypes';
 import { useSelector, useDispatch } from 'react-redux';
 import * as action from './actions/quoteAction';
 
@@ -23,30 +22,31 @@ function App() {
     '#77B1A9',
     '#73A857',
   ];
+  const color = Math.floor(Math.random() * colors.length);
   const dispatch = useDispatch();
   const { quoteReducer } = useSelector((state) => state);
-  let quotesData;
   let currentQuote = '';
   let currentAuthor = '';
 
-  const getRandomQuote = () => {
+  const onGetRandomQuote = () => {
+    const { quotesData } = quoteReducer;
     return quotesData.quotes[
       Math.floor(Math.random() * quotesData.quotes.length)
     ];
   };
-  const getQuote = () => {
-    dispatch(action.getRandomQuote());
-    let randomQuote = getRandomQuote();
+  const onGetQuote = () => {
+    console.log('on Get quotes')
+    let randomQuote = onGetRandomQuote();
     currentQuote = randomQuote.quote;
     currentAuthor = randomQuote.author;
     setQuote(currentQuote);
     setAuthor(currentAuthor);
-    // console.log(randomQuote);
   };
 
   useEffect(() => {
+    console.log('Get quotes')
     dispatch(action.getQuotes());
-  });
+  },[dispatch]);
 
   return (
     <div className='flex justify-center items-center font-sans h-screen bg-green-300'>
@@ -62,7 +62,7 @@ function App() {
         </div>
         <div className='w-450 m-auto block'>
           <a
-            href='https://twitter.com/intent/tweet?hashtags=quotes&related=freecodecamp&text=%22Education%20costs%20money.%20%20But%20then%20so%20does%20ignorance.%22%20Sir%20Claus%20Moser'
+            href={encodeURI(`https://twitter.com/intent/tweet?text=${quote}&hashtags=quote`)}
             title='Tweet this quote!'
             target='_blank'
             rel='noreferrer'
@@ -87,7 +87,7 @@ function App() {
           </a>
           <button
             className='float-right h-9 rounded text-white bg-green-500 outline-none px-4 pt-2 pb-1.5 mt-7 text-sm cursor-pointer opacity-100'
-            onClick={getQuote}
+            onClick={onGetQuote}
           >
             New quote
           </button>
